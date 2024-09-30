@@ -1,0 +1,63 @@
+// Pin definitions
+const int ledPinXLeft = 3;
+const int ledPinXRight = 4;
+const int ledPinYUp = 5;
+const int ledPinYDown = 6;
+
+const int joystickX = A0;  // X-axis of Joystick
+const int joystickY = A1;  // Y-axis of Joystick
+
+void setup() {
+  // Set LED pins as output
+  pinMode(ledPinXLeft, OUTPUT);
+  pinMode(ledPinXRight, OUTPUT);
+  pinMode(ledPinYUp, OUTPUT);
+  pinMode(ledPinYDown, OUTPUT);
+
+  // Initialize serial communication (optional for debugging)
+  Serial.begin(9600);
+}
+
+void loop() {
+  int xValue = analogRead(joystickX);  // Read X-axis value
+  int yValue = analogRead(joystickY);  // Read Y-axis value
+
+  // Debugging: Print joystick values to serial monitor
+  Serial.print("X: ");
+  Serial.print(xValue);
+  Serial.print(" | Y: ");
+  Serial.println(yValue);
+
+  // Control LEDs based on joystick movement
+  // X-axis control (left and right)
+  if (xValue < 400) {
+    // Joystick moved left
+    digitalWrite(ledPinXLeft, HIGH);
+    digitalWrite(ledPinXRight, LOW);
+  } else if (xValue > 600) {
+    // Joystick moved right
+    digitalWrite(ledPinXLeft, LOW);
+    digitalWrite(ledPinXRight, HIGH);
+  } else {
+    // Joystick in the middle (neutral position)
+    digitalWrite(ledPinXLeft, LOW);
+    digitalWrite(ledPinXRight, LOW);
+  }
+
+  // Y-axis control (up and down)
+  if (yValue < 400) {
+    // Joystick moved up
+    digitalWrite(ledPinYUp, HIGH);
+    digitalWrite(ledPinYDown, LOW);
+  } else if (yValue > 600) {
+    // Joystick moved down
+    digitalWrite(ledPinYUp, LOW);
+    digitalWrite(ledPinYDown, HIGH);
+  } else {
+    // Joystick in the middle (neutral position)
+    digitalWrite(ledPinYUp, LOW);
+    digitalWrite(ledPinYDown, LOW);
+  }
+
+  delay(100);  // Add a small delay for better control response
+}
